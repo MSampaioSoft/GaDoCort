@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área Admin - GaDoCort</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Reset e Estilos Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Login - Design Moderno */
+        .admin-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('https://images.unsplash.com/photo-1519501025274-130f16653922?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            position: relative;
+        }
+        
+        .admin-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(0, 0, 0, 0.8) 100%);
+            z-index: 0;
+        }
+        
+        .login-box {
+            background: white;
+            padding: 3rem;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .login-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, #d4af37, #f1e5ac);
+        }
+        
+        .login-title {
+            font-size: 2rem;
+            margin-bottom: 2.5rem;
+            background: linear-gradient(to right, #d4af37, #f1e5ac);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 600;
+            letter-spacing: 1px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .login-title::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(to right, #d4af37, #f1e5ac);
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        
+        .form-group {
+            margin-bottom: 1.8rem;
+            text-align: left;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            color: #555;
+            font-size: 0.95rem;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #d4af37;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+            background-color: white;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #d4af37 0%, #f1e5ac 100%);
+            color: #1a1a1a;
+            border: none;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            position: relative;
+            overflow: hidden;
+            margin-top: 1.5rem;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover::after {
+            background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 100%);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #1a1a1a;
+            border: 1px solid #d4af37;
+            margin-top: 1rem;
+        }
+        
+        .btn-secondary:hover {
+            background: #f9f9f9;
+            color: #1a1a1a;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Dashboard - Design Moderno */
+        .admin-dashboard {
+            display: none;
+            width: 100%;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+        }
+        
+        /* Cabeçalho Aprimorado */
+        .admin-header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .admin-header-content {
+            display: flex;
+            align-items: center;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            justify-content: space-between;
+        }
+        
+        .admin-title {
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+        }
+        
+        .logo .ga {
+            background: linear-gradient(to right, #d4af37, #f1e5ac);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .logo .do {
+            background: linear-gradient(to right, #fafbfc, #fafbfc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 0 2px;
+        }
+        
+        .logo .cort {
+            background: linear-gradient(to right, #f1e5ac, #d4af37);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .admin-title img {
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 1rem;
+            border: 2px solid #d4af37;
+        }
+        
+        .admin-user {
+            display: flex;
+            align-items: center;
+        }
+        
+        .admin-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #d4af37 0%, #f1e5ac 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-weight: bold;
+            color: #1a1a1a;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logout-btn {
+            background: transparent;
+            color: white;
+            border: 1px solid #d4af37;
+            padding: 0.6rem 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+        
+        .logout-btn:hover {
+            background: linear-gradient(135deg, #d4af37 0%, #f1e5ac 100%);
+            color: #1a1a1a;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+        }
+        
+        /* Abas de Navegação */
+        .admin-tabs {
+            display: flex;
+            background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
+            padding: 0 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 68px;
+            z-index: 999;
+        }
+        
+        .tabs-container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        
+        .tabs-container::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .tab-btn {
+            background: transparent;
+            color: white;
+            border: none;
+            padding: 1.2rem 2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            position: relative;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+        
+        .tab-btn:hover {
+            color: #d4af37;
+        }
+        
+        .tab-btn.active {
+            color: #d4af37;
+            font-weight: 600;
+        }
+        
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, #d4af37, #f1e5ac);
+            bottom: 0;
+            left: 0;
+        }
+        
+        /* Conteúdo das Abas */
+        .admin-main {
+            max-width: 1200px;
+            margin: 2.5rem auto;
+            padding: 0 2rem;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        /* Dashboard - Visão Geral */
+        .dashboard-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, #d4af37, #f1e5ac);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #d4af37, #f1e5ac);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 1rem 0;
+            line-height: 1;
+        }
+        
+        .stat-label {
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        /* Seções */
+        .section-title {
+            text-align: left;
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #2c2c2c;
+            position: relative;
+            padding-bottom: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(to right, #d4af37, #f1e5ac);
+            bottom: 0;
+            left: 0;
+            border-radius: 2px;
+        }
+        
+        .admin-card {
+            background: white;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            margin-bottom: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .admin-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, #d4af37, #f1e5ac);
+        }
+        
+        /* Listas */
+        .services-list, .availability-list, .appointments-list {
+            margin-top: 2rem;
+        }
+        
+        .service-item, .availability-item, .appointment-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid #eee;
+            transition: all 0.3s ease;
+        }
+        
+        .service-item:hover, .availability-item:hover, .appointment-item:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .service-info h4, .appointment-info h4 {
+            color: #2c2c2c;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .service-price {
+            color: #d4af37;
+            font-weight: 700;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 0.8rem;
+        }
+        
+        .edit-btn, .delete-btn {
+            background: transparent;
+            padding: 0.6rem 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+            border-radius: 50px;
+            font-weight: 500;
+            border: 1px solid;
+        }
+        
+        .edit-btn {
+            color: #3498db;
+            border-color: #3498db;
+        }
+        
+        .edit-btn:hover {
+            background: #3498db;
+            color: white;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+        
+        .delete-btn {
+            color: #e74c3c;
+            border-color: #e74c3c;
+        }
+        
+        .delete-btn:hover {
+            background: #e74c3c;
+            color: white;
+            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+        }
+        
+        .availability-date {
+            font-weight: 600;
+            color: #2c2c2c;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .availability-hours {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .hour-tag {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+            color: white;
+            padding: 0.4rem 0.9rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Botão de intervalo de horário */
+        .interval-btn {
+            background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.2rem;
+            margin: 1rem 0;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .interval-btn:hover {
+            background: linear-gradient(135deg, #d4af37 0%, #f1e5ac 100%);
+            color: #1a1a1a;
+            box-shadow: 0 6px 15px rgba(212, 175, 55, 0.3);
+        }
+        
+        /* Filtros */
+        .filter-container {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .filter-group label {
+            font-size: 0.9rem;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        .filter-group select, .filter-group input {
+            padding: 0.7rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-group select:focus, .filter-group input:focus {
+            outline: none;
+            border-color: #d4af37;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+            background-color: white;
+        }
+        
+        /* Animações */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Efeito de flutuação sutil */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        .stat-card {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .dashboard-overview {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .admin-card {
+                padding: 2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .login-box {
+                padding: 2.5rem 2rem;
+            }
+            
+            .service-item, .availability-item, .appointment-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.5rem;
+            }
+            
+            .action-buttons {
+                align-self: flex-end;
+            }
+            
+            .admin-tabs {
+                flex-direction: column;
+                padding: 0;
+                top: 64px;
+            }
+            
+            .tabs-container {
+                flex-direction: column;
+            }
+            
+            .tab-btn {
+                padding: 1rem;
+                text-align: left;
+                border-bottom: 1px solid #333;
+            }
+            
+            .tab-btn.active::after {
+                width: 3px;
+                height: 100%;
+                left: 0;
+                bottom: auto;
+                top: 0;
+            }
+            
+            .dashboard-overview {
+                grid-template-columns: 1fr;
+            }
+            
+            .admin-header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .admin-user {
+                margin-top: 1rem;
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .filter-container {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .filter-group {
+                width: 100%;
+            }
+            
+            .filter-group select, .filter-group input {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .login-box {
+                padding: 2rem 1.5rem;
+            }
+            
+            .login-title {
+                font-size: 1.8rem;
+            }
+            
+            .admin-card {
+                padding: 1.5rem;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+            
+            .stat-card {
+                padding: 1.5rem;
+                animation: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container" id="loginSection">
+        <div class="login-box">
+            <h2 class="login-title">Área Admin</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="adminUser">Usuário</label>
+                    <input type="text" id="adminUser" required placeholder="Digite seu usuário">
+                </div>
+                <div class="form-group">
+                    <label for="adminPassword">Senha</label>
+                    <input type="password" id="adminPassword" required placeholder="Digite sua senha">
+                </div>
+                <button type="submit" class="btn">Login</button>
+                <a href="index.html" class="btn btn-secondary">Página Principal</a>
+            </form>
+        </div>
+    </div>
+
+    <div class="admin-dashboard" id="dashboardSection" style="display: none;">
+        <header class="admin-header">
+            <div class="admin-header-content">
+                <h1 class="admin-title">
+                    <a href="https://www.instagram.com/barbeariagadocort/" target="_blank" style="display: flex; align-items: center; text-decoration: none; color: white;">
+                        <!-- Imagem do perfil do Instagram -->
+                        <img src="C:\Users\msamp\Desktop\gadocort\logo\329992172_573068541146851_2266844139048132495_n (1).jpg" 
+                             alt="Logo Barbearia" 
+                             style="height: 40px; width: 40px; border-radius: 50%; object-fit: cover; margin-right: 1rem;">
+                        <div class="logo"><span class="ga">GA</span><span class="do">DO</span><span class="cort">CORT</span> <span style="font-size: 0.9rem; margin-left: 0.5rem;">ADMIN</span></div>
+                    </a>
+                </h1>
+                <div class="admin-user">
+                    <div class="admin-avatar" id="userInitial">A</div>
+                    <button id="logoutBtn" class="logout-btn">Sair</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="admin-tabs">
+            <div class="tabs-container">
+                <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+                <button class="tab-btn" data-tab="services">Serviços</button>
+                <button class="tab-btn" data-tab="availability">Disponibilidade</button>
+                <button class="tab-btn" data-tab="appointments">Agendamentos</button>
+            </div>
+        </div>
+
+        <main class="admin-main">
+            <!-- Dashboard -->
+            <div class="tab-content active" id="dashboard-tab">
+                <section class="admin-section">
+                    <h2 class="section-title">Visão Geral</h2>
+                    
+                    <div class="dashboard-overview">
+                        <div class="stat-card">
+                            <div class="stat-label">Agendamentos Hoje</div>
+                            <div class="stat-value" id="todayAppointments">0</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-label">Total de Serviços</div>
+                            <div class="stat-value" id="totalServices">0</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-label">R$ Faturamento Mês</div>
+                            <div class="stat-value"> <span id="totalRevenue" style="font-size: 2rem;" >0</span></div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-label">Horários Disponíveis</div>
+                            <div class="stat-value" id="availableSlots">0</div>
+                        </div>
+                    </div>
+                    
+                    <div class="admin-card">
+                        <div class="filter-container">
+                            <div class="filter-group">
+                                <label for="dashboardMonth">Mês:</label>
+                                <select id="dashboardMonth">
+                                    <option value="1">Janeiro</option>
+                                    <option value="2">Fevereiro</option>
+                                    <option value="3">Março</option>
+                                    <option value="4">Abril</option>
+                                    <option value="5">Maio</option>
+                                    <option value="6">Junho</option>
+                                    <option value="7">Julho</option>
+                                    <option value="8">Agosto</option>
+                                    <option value="9">Setembro</option>
+                                    <option value="10">Outubro</option>
+                                    <option value="11">Novembro</option>
+                                    <option value="12">Dezembro</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="dashboardYear">Ano:</label>
+                                <input type="number" id="dashboardYear" min="2020" max="2030" step="1">
+                            </div>
+                            <button id="applyDashboardFilter" class="btn">Aplicar Filtro</button>
+                        </div>
+                        
+                        <h3 class="section-title">Agendamentos Recentes</h3>
+                        <div class="appointments-list" id="recentAppointments">
+                            <!-- Últimos agendamentos serão carregados aqui -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Aba Serviços -->
+            <div class="tab-content" id="services-tab">
+                <section class="admin-section">
+                    <h2 class="section-title">Gerenciar Serviços</h2>
+                    <div class="admin-card">
+                        <form id="addServiceForm">
+                            <div class="form-group">
+                                <label for="serviceName">Nome do Serviço</label>
+                                <input type="text" id="serviceName" required placeholder="Ex: Corte de Cabelo">
+                            </div>
+                            <div class="form-group">
+                                <label for="servicePrice">Preço (R$)</label>
+                                <input type="number" id="servicePrice" step="0.01" required placeholder="Ex: 30.00">
+                            </div>
+                            <div class="form-group">
+                                <label for="serviceDuration">Duração (minutos)</label>
+                                <input type="number" id="serviceDuration" required placeholder="Ex: 30">
+                            </div>
+                            <button type="submit" class="btn">Adicionar Serviço</button>
+                        </form>
+
+                        <div class="services-list" id="servicesList">
+                            <!-- Lista de serviços será carregada via JavaScript -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Aba Disponibilidade -->
+            <div class="tab-content" id="availability-tab">
+                <section class="admin-section">
+                    <h2 class="section-title">Disponibilidade</h2>
+                    <div class="admin-card">
+                        <form id="availabilityForm">
+                            <div class="form-group">
+                                <label for="availableDate">Data</label>
+                                <input type="date" id="availableDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="availableHours">Horários (separados por vírgula)</label>
+                                <input type="text" id="availableHours" placeholder="Ex: 09:00, 10:00, 11:00" required>
+                            </div>
+                            <button type="button" id="addIntervalBtn" class="interval-btn">Adicionar intervalo 10:00–20:00 (45min)</button>
+                            <button type="submit" class="btn">Adicionar Disponibilidade</button>
+                        </form>
+
+                        <div class="availability-list" id="availabilityList">
+                            <!-- Lista de disponibilidade será carregada via JavaScript -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Aba Agendamentos -->
+            <div class="tab-content" id="appointments-tab">
+                <section class="admin-section">
+                    <h2 class="section-title">Agendamentos</h2>
+                    <div class="admin-card">
+                        <div class="filter-container">
+                            <div class="form-group" style="margin-bottom: 0; flex: 1;">
+                                <label for="searchAppointment">Pesquisar:</label>
+                                <input type="text" id="searchAppointment" placeholder="Nome ou ID agendamento">
+                            </div>
+                            <button id="searchAppointmentBtn" class="btn">Buscar</button>
+                        </div>
+                        
+                        <div class="appointments-list" id="appointmentsList">
+                            <!-- Lista de agendamentos será carregada via JavaScript -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elementos do DOM
+            const loginForm = document.getElementById('loginForm');
+            const adminUserInput = document.getElementById('adminUser');
+            const adminPasswordInput = document.getElementById('adminPassword');
+            const loginSection = document.getElementById('loginSection');
+            const dashboardSection = document.getElementById('dashboardSection');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const userInitial = document.getElementById('userInitial');
+            const addIntervalBtn = document.getElementById('addIntervalBtn');
+            const searchAppointmentInput = document.getElementById('searchAppointment');
+            const searchAppointmentBtn = document.getElementById('searchAppointmentBtn');
+            const dashboardMonthSelect = document.getElementById('dashboardMonth');
+            const dashboardYearInput = document.getElementById('dashboardYear');
+            const applyDashboardFilter = document.getElementById('applyDashboardFilter');
+            
+            // Sistema de abas
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            // Inicialização
+            init();
+            
+            function init() {
+                setupEventListeners();
+                checkLoginStatus();
+                
+                // Configura o mês e ano atual nos filtros
+                const now = new Date();
+                dashboardMonthSelect.value = now.getMonth() + 1;
+                dashboardYearInput.value = now.getFullYear();
+            }
+            
+            function setupEventListeners() {
+                // Navegação por abas
+                tabBtns.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const tabId = this.getAttribute('data-tab');
+                        switchTab(tabId);
+                    });
+                });
+                
+                // Login
+                loginForm.addEventListener('submit', handleLogin);
+                
+                // Logout
+                logoutBtn.addEventListener('click', handleLogout);
+                
+                // Botão de intervalo de horário
+                addIntervalBtn.addEventListener('click', addTimeInterval);
+                
+                // Busca de agendamentos
+                searchAppointmentBtn.addEventListener('click', searchAppointments);
+                searchAppointmentInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        searchAppointments();
+                    }
+                });
+                
+                // Filtro do dashboard
+                applyDashboardFilter.addEventListener('click', applyDashboardFilters);
+            }
+            
+            function checkLoginStatus() {
+                const isLoggedIn = localStorage.getItem('adminLoggedIn') === 'true';
+                if (isLoggedIn) {
+                    showDashboard();
+                }
+            }
+            
+            function handleLogin(e) {
+                e.preventDefault();
+                
+                const username = adminUserInput.value.trim();
+                const password = adminPasswordInput.value.trim();
+                
+                if (!username || !password) {
+                    alert('Por favor, preencha todos os campos!');
+                    return;
+                }
+                
+                // Verifica a senha (senha padrão é "gadocort123")
+                const storedPassword = localStorage.getItem('adminPassword') || 'gadocort123';
+                
+                if (password === storedPassword) {
+                    localStorage.setItem('adminLoggedIn', 'true');
+                    localStorage.setItem('adminUser', username);
+                    showDashboard();
+                } else {
+                    alert('Usuário ou senha incorretos!');
+                }
+            }
+            
+            function handleLogout() {
+                localStorage.removeItem('adminLoggedIn');
+                loginSection.style.display = 'flex';
+                dashboardSection.style.display = 'none';
+                adminUserInput.value = '';
+                adminPasswordInput.value = '';
+            }
+            
+            function switchTab(tabId) {
+                // Remove classe active de todos os botões e conteúdos
+                tabBtns.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                // Adiciona classe active ao botão e conteúdo clicado
+                document.querySelector(`.tab-btn[data-tab="${tabId}"]`).classList.add('active');
+                document.getElementById(`${tabId}-tab`).classList.add('active');
+                
+                // Atualiza dados específicos da aba se necessário
+                if (tabId === 'dashboard') {
+                    loadDashboardData();
+                }
+            }
+            
+            function showDashboard() {
+                loginSection.style.display = 'none';
+                dashboardSection.style.display = 'block';
+                
+                // Mostra inicial do usuário
+                const username = localStorage.getItem('adminUser') || 'Admin';
+                userInitial.textContent = username.charAt(0).toUpperCase();
+                
+                // Carrega todos os dados
+                loadAllData();
+                
+                // Configura formulários
+                setupForms();
+            }
+            
+            function loadAllData() {
+                loadDashboardData();
+                loadServices();
+                loadAvailability();
+                loadAppointments();
+            }
+            
+            function setupForms() {
+                // Formulário de serviços
+                document.getElementById('addServiceForm').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    addService();
+                });
+                
+                // Formulário de disponibilidade
+                document.getElementById('availabilityForm').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    addAvailability();
+                });
+            }
+            
+            function loadDashboardData() {
+                const now = new Date();
+                const today = now.toISOString().split('T')[0];
+                const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+                const services = JSON.parse(localStorage.getItem('services')) || [];
+                const availability = JSON.parse(localStorage.getItem('availability')) || [];
+                
+                // Agendamentos de hoje
+                const todayApps = appointments.filter(a => a.data === today);
+                document.getElementById('todayAppointments').textContent = todayApps.length;
+                
+                // Total de serviços
+                document.getElementById('totalServices').textContent = services.length;
+                
+                // Faturamento mensal
+                const currentMonth = parseInt(dashboardMonthSelect.value);
+                const currentYear = parseInt(dashboardYearInput.value);
+                const monthlyRevenue = appointments
+                    .filter(a => {
+                        const [year, month] = a.data.split('-');
+                        return parseInt(month) === currentMonth && parseInt(year) === currentYear;
+                    })
+                    .reduce((total, app) => total + app.preco, 0);
+                
+                document.getElementById('totalRevenue').textContent = monthlyRevenue.toFixed(2);
+                
+                // Horários disponíveis
+                const totalSlots = availability.reduce((total, item) => total + item.hours.length, 0);
+                document.getElementById('availableSlots').textContent = totalSlots;
+                
+                // Agendamentos recentes (últimos 5)
+                loadRecentAppointments();
+            }
+            
+            function loadRecentAppointments() {
+                const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+                const recentAppointments = appointments
+                    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+                    .slice(0, 5);
+                
+                const recentList = document.getElementById('recentAppointments');
+                recentList.innerHTML = '';
+                
+                if (recentAppointments.length === 0) {
+                    recentList.innerHTML = '<p>Nenhum agendamento recente.</p>';
+                    return;
+                }
+                
+                recentAppointments.forEach(app => {
+                    const formattedDate = new Date(app.data).toLocaleDateString('pt-BR');
+                    const item = document.createElement('div');
+                    item.className = 'appointment-item';
+                    item.innerHTML = `
+                        <div class="appointment-info">
+                            <h4>${app.servico} - R$ ${app.preco.toFixed(2)}</h4>
+                            <p><strong>Cliente:</strong> ${app.nome}</p>
+                            <p><strong>Data:</strong> ${formattedDate} às ${app.horario}</p>
+                            <p><strong>ID:</strong> ${app.id}</p>
+                        </div>
+                    `;
+                    recentList.appendChild(item);
+                });
+            }
+            
+            function addService() {
+                const serviceName = document.getElementById('serviceName').value.trim();
+                const servicePrice = parseFloat(document.getElementById('servicePrice').value);
+                const serviceDuration = parseInt(document.getElementById('serviceDuration').value);
+                
+                if (!serviceName || isNaN(servicePrice) || isNaN(serviceDuration)) {
+                    alert('Preencha todos os campos corretamente!');
+                    return;
+                }
+                
+                const services = JSON.parse(localStorage.getItem('services')) || [];
+                const newId = services.length > 0 ? Math.max(...services.map(s => s.id)) + 1 : 1;
+                
+                const newService = {
+                    id: newId,
+                    name: serviceName,
+                    price: servicePrice,
+                    duration: serviceDuration
+                };
+                
+                services.push(newService);
+                localStorage.setItem('services', JSON.stringify(services));
+                
+                loadServices();
+                loadDashboardData();
+                document.getElementById('addServiceForm').reset();
+            }
+            
+            function loadServices() {
+                const services = JSON.parse(localStorage.getItem('services')) || [];
+                const servicesList = document.getElementById('servicesList');
+                
+                servicesList.innerHTML = '';
+                
+                if (services.length === 0) {
+                    servicesList.innerHTML = '<p>Nenhum serviço cadastrado.</p>';
+                    return;
+                }
+                
+                services.forEach(service => {
+                    const serviceItem = document.createElement('div');
+                    serviceItem.className = 'service-item';
+                    serviceItem.innerHTML = `
+                        <div class="service-info">
+                            <h4>${service.name}</h4>
+                            <p>Duração: ${service.duration} min | Preço: R$ ${service.price.toFixed(2)}</p>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="edit-btn" data-id="${service.id}">Editar</button>
+                            <button class="delete-btn" data-id="${service.id}">Excluir</button>
+                        </div>
+                    `;
+                    servicesList.appendChild(serviceItem);
+                });
+                
+                // Event listeners para botões
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const serviceId = parseInt(this.getAttribute('data-id'));
+                        deleteService(serviceId);
+                    });
+                });
+                
+                document.querySelectorAll('.edit-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const serviceId = parseInt(this.getAttribute('data-id'));
+                        editService(serviceId);
+                    });
+                });
+            }
+            
+            function deleteService(id) {
+                if (!confirm('Tem certeza que deseja excluir este serviço?')) return;
+                
+                const services = JSON.parse(localStorage.getItem('services')) || [];
+                const updatedServices = services.filter(service => service.id !== id);
+                
+                localStorage.setItem('services', JSON.stringify(updatedServices));
+                loadServices();
+                loadDashboardData();
+            }
+            
+            function editService(id) {
+                const services = JSON.parse(localStorage.getItem('services')) || [];
+                const service = services.find(s => s.id === id);
+                
+                if (!service) return;
+                
+                const newName = prompt('Novo nome do serviço:', service.name);
+                if (newName === null) return;
+                
+                const newPrice = parseFloat(prompt('Novo preço:', service.price));
+                if (isNaN(newPrice)) return;
+                
+                const newDuration = parseInt(prompt('Nova duração (minutos):', service.duration));
+                if (isNaN(newDuration)) return;
+                
+                service.name = newName;
+                service.price = newPrice;
+                service.duration = newDuration;
+                
+                localStorage.setItem('services', JSON.stringify(services));
+                loadServices();
+                loadDashboardData();
+            }
+            
+            function addAvailability() {
+                let date = document.getElementById('availableDate').value;
+                
+                // Corrige o problema do fuso horário (a data estava sendo mostrada um dia antes)
+                if (date) {
+                    const dateObj = new Date(date);
+                    dateObj.setMinutes(dateObj.getMinutes() + dateObj.getTimezoneOffset());
+                    date = dateObj.toISOString().split('T')[0];
+                }
+                
+                const hoursInput = document.getElementById('availableHours').value.trim();
+                
+                if (!date || !hoursInput) {
+                    alert('Preencha todos os campos corretamente!');
+                    return;
+                }
+                
+                const hours = hoursInput.split(',')
+                    .map(h => h.trim())
+                    .filter(h => h !== '');
+                
+                if (hours.length === 0) {
+                    alert('Informe pelo menos um horário válido!');
+                    return;
+                }
+                
+                const availability = JSON.parse(localStorage.getItem('availability')) || [];
+                const existingDateIndex = availability.findIndex(item => item.date === date);
+                
+                if (existingDateIndex !== -1) {
+                    // Adiciona apenas os horários que não existem
+                    const existingHours = availability[existingDateIndex].hours;
+                    const newHours = hours.filter(h => !existingHours.includes(h));
+                    availability[existingDateIndex].hours = [...existingHours, ...newHours].sort();
+                } else {
+                    availability.push({
+                        date,
+                        hours: hours.sort()
+                    });
+                }
+                
+                localStorage.setItem('availability', JSON.stringify(availability));
+                loadAvailability();
+                loadDashboardData();
+                document.getElementById('availabilityForm').reset();
+            }
+            
+            function addTimeInterval() {
+                const startHour = 10; // 10:00
+                const endHour = 20;    // 20:00
+                const interval = 45;   // 45 minutos
+                
+                let hours = [];
+                let currentHour = startHour;
+                
+                while (currentHour < endHour) {
+                    const hour = Math.floor(currentHour);
+                    const minutes = Math.floor((currentHour - hour) * 60);
+                    
+                    const formattedHour = hour.toString().padStart(2, '0');
+                    const formattedMinutes = minutes.toString().padStart(2, '0');
+                    
+                    hours.push(`${formattedHour}:${formattedMinutes}`);
+                    
+                    currentHour += interval / 60;
+                }
+                
+                document.getElementById('availableHours').value = hours.join(', ');
+            }
+            
+            function loadAvailability() {
+                const availability = JSON.parse(localStorage.getItem('availability')) || [];
+                const availabilityList = document.getElementById('availabilityList');
+                
+                availabilityList.innerHTML = '';
+                
+                if (availability.length === 0) {
+                    availabilityList.innerHTML = '<p>Nenhuma disponibilidade cadastrada.</p>';
+                    return;
+                }
+                
+                // Ordena por data
+                availability.sort((a, b) => new Date(a.date) - new Date(b.date));
+                
+                availability.forEach(item => {
+                    const availabilityItem = document.createElement('div');
+                    availabilityItem.className = 'availability-item';
+                    const dateObj = new Date(item.date);
+                    dateObj.setMinutes(dateObj.getMinutes() + dateObj.getTimezoneOffset());
+                    const formattedDate = dateObj.toLocaleDateString('pt-BR');
+                    
+                    availabilityItem.innerHTML = `
+                        <div>
+                            <p class="availability-date">${formattedDate}</p>
+                            <div class="availability-hours">
+                                ${item.hours.map(hour => `<span class="hour-tag">${hour}</span>`).join('')}
+                            </div>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="delete-btn" data-date="${item.date}">Excluir</button>
+                        </div>
+                    `;
+                    availabilityList.appendChild(availabilityItem);
+                });
+                
+                document.querySelectorAll('.availability-item .delete-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const date = this.getAttribute('data-date');
+                        deleteAvailability(date);
+                    });
+                });
+            }
+            
+            function deleteAvailability(date) {
+                if (!confirm('Tem certeza que deseja excluir esta disponibilidade?')) return;
+                
+                const availability = JSON.parse(localStorage.getItem('availability')) || [];
+                const updatedAvailability = availability.filter(item => item.date !== date);
+                
+                localStorage.setItem('availability', JSON.stringify(updatedAvailability));
+                loadAvailability();
+                loadDashboardData();
+            }
+            
+            function loadAppointments() {
+                const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+                const appointmentsList = document.getElementById('appointmentsList');
+                
+                appointmentsList.innerHTML = '';
+                
+                if (appointments.length === 0) {
+                    appointmentsList.innerHTML = '<p>Nenhum agendamento realizado.</p>';
+                    return;
+                }
+                
+                // Ordena por data/horário
+                appointments.sort((a, b) => {
+                    const dateA = new Date(`${a.data}T${a.horario}`);
+                    const dateB = new Date(`${b.data}T${b.horario}`);
+                    return dateA - dateB;
+                });
+                
+                appointments.forEach(appointment => {
+                    const appointmentItem = document.createElement('div');
+                    appointmentItem.className = 'appointment-item';
+                    const dateObj = new Date(appointment.data);
+                    dateObj.setMinutes(dateObj.getMinutes() + dateObj.getTimezoneOffset());
+                    const formattedDate = dateObj.toLocaleDateString('pt-BR');
+                    
+                    appointmentItem.innerHTML = `
+                        <div class="appointment-info">
+                            <h4>${appointment.servico} - R$ ${appointment.preco.toFixed(2)}</h4>
+                            <p><strong>Cliente:</strong> ${appointment.nome} (${appointment.telefone})</p>
+                            <p><strong>Data:</strong> ${formattedDate} às ${appointment.horario}</p>
+                            <p><strong>ID:</strong> ${appointment.id}</p>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="delete-btn" data-id="${appointment.id}">Excluir</button>
+                        </div>
+                    `;
+                    appointmentsList.appendChild(appointmentItem);
+                });
+                
+                document.querySelectorAll('.appointment-item .delete-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = this.getAttribute('data-id');
+                        deleteAppointment(id);
+                    });
+                });
+            }
+            
+            function searchAppointments() {
+                const searchTerm = searchAppointmentInput.value.trim().toLowerCase();
+                if (!searchTerm) {
+                    loadAppointments();
+                    return;
+                }
+                
+                const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+                const filteredAppointments = appointments.filter(app => 
+                    app.nome.toLowerCase().includes(searchTerm) || 
+                    app.id.toString().includes(searchTerm)
+                );
+                
+                const appointmentsList = document.getElementById('appointmentsList');
+                appointmentsList.innerHTML = '';
+                
+                if (filteredAppointments.length === 0) {
+                    appointmentsList.innerHTML = '<p>Nenhum agendamento encontrado.</p>';
+                    return;
+                }
+                
+                filteredAppointments.forEach(appointment => {
+                    const appointmentItem = document.createElement('div');
+                    appointmentItem.className = 'appointment-item';
+                    const dateObj = new Date(appointment.data);
+                    dateObj.setMinutes(dateObj.getMinutes() + dateObj.getTimezoneOffset());
+                    const formattedDate = dateObj.toLocaleDateString('pt-BR');
+                    
+                    appointmentItem.innerHTML = `
+                        <div class="appointment-info">
+                            <h4>${appointment.servico} - R$ ${appointment.preco.toFixed(2)}</h4>
+                            <p><strong>Cliente:</strong> ${appointment.nome} (${appointment.telefone})</p>
+                            <p><strong>Data:</strong> ${formattedDate} às ${appointment.horario}</p>
+                            <p><strong>ID:</strong> ${appointment.id}</p>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="delete-btn" data-id="${appointment.id}">Excluir</button>
+                        </div>
+                    `;
+                    appointmentsList.appendChild(appointmentItem);
+                });
+                
+                document.querySelectorAll('.appointment-item .delete-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = this.getAttribute('data-id');
+                        deleteAppointment(id);
+                    });
+                });
+            }
+            
+            function deleteAppointment(id) {
+                if (!confirm('Tem certeza que deseja excluir este agendamento?')) return;
+                
+                const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+                const appointmentToDelete = appointments.find(a => a.id === id);
+                const updatedAppointments = appointments.filter(a => a.id !== id);
+                
+                localStorage.setItem('appointments', JSON.stringify(updatedAppointments));
+                
+                // Restaura o horário na disponibilidade
+                if (appointmentToDelete) {
+                    restoreAvailabilitySlot(appointmentToDelete.data, appointmentToDelete.horario);
+                }
+                
+                loadAppointments();
+                loadDashboardData();
+            }
+            
+            function restoreAvailabilitySlot(date, hour) {
+                const availability = JSON.parse(localStorage.getItem('availability')) || [];
+                const dateAvailability = availability.find(item => item.date === date);
+                
+                if (dateAvailability) {
+                    if (!dateAvailability.hours.includes(hour)) {
+                        dateAvailability.hours.push(hour);
+                        dateAvailability.hours.sort();
+                    }
+                } else {
+                    availability.push({
+                        date: date,
+                        hours: [hour]
+                    });
+                }
+                
+                localStorage.setItem('availability', JSON.stringify(availability));
+            }
+            
+            function applyDashboardFilters() {
+                loadDashboardData();
+            }
+        });
+    </script>
+</body>
+</html>

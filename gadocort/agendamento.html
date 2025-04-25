@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendamento - GaDoCort</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Reset e Estilos Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* Cabeçalho Moderno */
+        header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+            color: white;
+            padding: 1.2rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        .logo .ga {
+            background: linear-gradient(to right, #d4af37, #f1e5ac);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .logo .do {
+            background: linear-gradient(to right, #fafbfc, #fafbfc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 0 2px;
+        }
+        
+        .logo .cort {
+            background: linear-gradient(to right, #f1e5ac, #d4af37);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .logo:hover {
+            transform: scale(1.02);
+        }
+        
+        /* Navegação */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+            position: relative;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            display: inline-block;
+            padding: 0.5rem 0;
+        }
+        
+        .nav-links a:hover {
+            color: #d4af37;
+            transform: translateY(-2px);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(to right, #d4af37, #f1e5ac);
+            transition: width 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .admin-link {
+            background: linear-gradient(to right, #d4af37, #f1e5ac);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        
+        /* Formulário de Agendamento - Design Moderno */
+        .booking-section {
+            padding: 8rem 2rem 5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .booking-card {
+            background: white;
+            padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .booking-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, #d4af37, #f1e5ac);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            position: relative;
+            color: #2c2c2c;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(to right, #d4af37, #f1e5ac);
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        
+        .form-group {
+            margin-bottom: 1.8rem;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.6rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            color: #555;
+            font-size: 0.95rem;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #d4af37;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+            background-color: white;
+        }
+        
+        .form-group input::placeholder {
+            color: #aaa;
+        }
+        
+        /* Estilo personalizado para o select */
+        .form-group select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #d4af37 0%, #f1e5ac 100%);
+            color: #1a1a1a;
+            border: none;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover::after {
+            background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 100%);
+        }
+        
+        /* Seção do Ticket - Design Moderno */
+        .ticket-section {
+            padding: 8rem 2rem 5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .ticket-card {
+            background: white;
+            padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .ticket-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, #d4af37, #f1e5ac);
+        }
+        
+        .ticket-title {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            color: #2c2c2c;
+            font-weight: 600;
+            letter-spacing: 1px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .ticket-title::after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(to right, #d4af37, #f1e5ac);
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        
+        .ticket-info {
+            text-align: left;
+            margin-bottom: 2rem;
+            background: #f9f9f9;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+        
+        .ticket-info p {
+            margin-bottom: 1rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px dashed #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .ticket-info p:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .ticket-info strong {
+            color: #555;
+            font-weight: 500;
+            min-width: 120px;
+            display: inline-block;
+        }
+        
+        .ticket-id {
+            font-weight: 700;
+            background: linear-gradient(to right, #d4af37, #f1e5ac);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #1a1a1a;
+            border: 1px solid #d4af37;
+            flex: 1;
+        }
+        
+        .btn-secondary:hover {
+            background: #f9f9f9;
+            color: #1a1a1a;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Efeito de flutuação sutil */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        .booking-card, .ticket-card {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        /* Rodapé Moderno */
+        footer {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+            color: white;
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #d4af37, #f1e5ac);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 600;
+        }
+        
+        .footer-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-info p {
+            margin: 0;
+            color: #ddd;
+            font-weight: 300;
+            position: relative;
+            padding: 0 1.5rem;
+        }
+        
+        .footer-info p:not(:last-child)::after {
+            content: '|';
+            position: absolute;
+            right: -0.75rem;
+            color: #555;
+        }
+        
+        .footer-content .copyright {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .booking-card, .ticket-card {
+                padding: 2rem 1.5rem;
+                animation: none;
+            }
+            
+            .nav-links li {
+                margin-left: 1.2rem;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            .btn, .btn-secondary {
+                width: 100%;
+            }
+            
+            .section-title, .ticket-title {
+                font-size: 1.6rem;
+            }
+            
+            .footer-info {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .footer-info p:not(:last-child)::after {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            header {
+                padding: 1rem;
+            }
+            
+            .logo {
+                font-size: 1.5rem;
+            }
+            
+            .nav-links {
+                display: none; /* Simplificando para mobile */
+            }
+            
+            .booking-section, .ticket-section {
+                padding: 6rem 1rem 3rem;
+            }
+        }
+        
+        /* Efeito de transição suave entre seções */
+        .booking-section, .ticket-section {
+            transition: all 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo"><span class="ga">GA</span><span class="do">DO</span><span class="cort">CORT</span></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Início</a></li>
+                <li><a href="agendamento.html">Agendamento</a></li>
+                <li><a href="admin.html" class="admin-link">Acesso Administrativo</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <section class="booking-section" id="bookingFormSection">
+            <div class="booking-card">
+                <h2 class="section-title">Agende seu Horário</h2>
+                <form id="agendamentoForm">
+                    <div class="form-group">
+                        <label for="nome">Nome Completo</label>
+                        <input type="text" id="nome" name="nome" required placeholder="Digite seu nome completo">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="telefone">Telefone</label>
+                        <input type="tel" id="telefone" name="telefone" required placeholder="(00) 00000-0000">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="servico">Serviço</label>
+                        <select id="servico" name="servico" required>
+                            <option value="">Selecione um serviço</option>
+                            <!-- Opções serão carregadas via JavaScript -->
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="data">Data</label>
+                        <input type="date" id="data" name="data" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="horario">Horário</label>
+                        <select id="horario" name="horario" required>
+                            <option value="">Selecione um horário</option>
+                            <!-- Opções serão carregadas via JavaScript -->
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn">
+                        <span>Confirmar Agendamento</span>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <section class="ticket-section" id="ticketSection" style="display: none;">
+            <div class="ticket-card">
+                <h3 class="ticket-title">Agendamento Confirmado!</h3>
+                <div class="ticket-info" id="ticketContent">
+                    <!-- Ticket será gerado via JavaScript -->
+                </div>
+                <div class="btn-group">
+                    <button class="btn" onclick="window.print()">Imprimir Ticket</button>
+                    <a href="index.html" class="btn btn-secondary">Voltar ao Início</a>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="footer-content">
+            <h3>GaDoCort</h3>
+            <div class="footer-info">
+                <p>R. Vicente de Paulo Pereira, 187 - Fazenda Grande, Jundiaí - SP, 13212-423</p>
+                <p>Horário: Ter-Sáb 10h-20h</p>
+            </div>
+            <p class="copyright">&copy; 2019 GaDoCort. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const agendamentoForm = document.getElementById('agendamentoForm');
+    const servicoSelect = document.getElementById('servico');
+    const dataInput = document.getElementById('data');
+    const horarioSelect = document.getElementById('horario');
+    const bookingFormSection = document.getElementById('bookingFormSection');
+    const ticketSection = document.getElementById('ticketSection');
+    const ticketContent = document.getElementById('ticketContent');
+    
+    // Formatação do telefone
+    document.getElementById('telefone').addEventListener('input', function (e) {
+        let value = this.value.replace(/\D/g, '');
+        
+        if (value.length > 0) {
+            value = value.match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
+            value = '(' + value[1] + ')' + (value[2] ? ' ' + value[2] : '') + (value[3] ? '-' + value[3] : '');
+        }
+        
+        this.value = value;
+    });
+    
+    // Carrega serviços no select
+    const services = JSON.parse(localStorage.getItem('services')) || [];
+    services.forEach(service => {
+        const option = document.createElement('option');
+        option.value = service.id;
+        option.textContent = `${service.name} - R$ ${service.price.toFixed(2)} (${service.duration} min)`;
+        servicoSelect.appendChild(option);
+    });
+    
+    // Configura data mínima (hoje)
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const yyyy = today.getFullYear();
+    dataInput.min = `${yyyy}-${mm}-${dd}`;
+    
+    // Atualiza horários quando a data muda
+    dataInput.addEventListener('change', function() {
+        updateAvailableHours();
+    });
+    
+    function updateAvailableHours() {
+        horarioSelect.innerHTML = '<option value="">Selecione um horário</option>';
+        
+        if (!dataInput.value) return;
+        
+        const availability = JSON.parse(localStorage.getItem('availability')) || [];
+        const selectedDateAvailability = availability.find(item => item.date === dataInput.value);
+        
+        if (selectedDateAvailability) {
+            selectedDateAvailability.hours.forEach(hour => {
+                const option = document.createElement('option');
+                option.value = hour;
+                option.textContent = hour;
+                horarioSelect.appendChild(option);
+            });
+        }
+    }
+    
+    // Processa o formulário de agendamento
+    agendamentoForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Validação do telefone
+        const telefoneInput = document.getElementById('telefone');
+        const telefoneNumeros = telefoneInput.value.replace(/\D/g, '');
+        
+        if (telefoneNumeros.length < 11) {
+            alert('Por favor, insira um telefone válido com DDD e 9 dígitos');
+            telefoneInput.focus();
+            return;
+        }
+        
+        // Recupera dados do formulário
+        const nome = document.getElementById('nome').value;
+        const telefone = telefoneInput.value; // Já está formatado
+        const servicoId = parseInt(servicoSelect.value);
+        const data = dataInput.value;
+        const horario = horarioSelect.value;
+        
+        // Encontra o serviço selecionado
+        const selectedService = services.find(service => service.id === servicoId);
+        
+        // Gera ID único para o agendamento
+        const agendamentoId = 'GC-' + Date.now().toString().slice(-6);
+        
+        // Cria objeto do agendamento
+        const agendamento = {
+            id: agendamentoId,
+            nome,
+            telefone,
+            servico: selectedService.name,
+            preco: selectedService.price,
+            data,
+            horario,
+            timestamp: new Date().toISOString()
+        };
+        
+        // Salva no localStorage
+        const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+        appointments.push(agendamento);
+        localStorage.setItem('appointments', JSON.stringify(appointments));
+        
+        // Atualiza disponibilidade (remove horário agendado)
+        updateAvailability(data, horario);
+        
+        // Mostra o ticket
+        showTicket(agendamento);
+        
+        // Rolagem suave para o ticket
+        setTimeout(() => {
+            ticketSection.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+    });
+    
+    function updateAvailability(date, hour) {
+        const availability = JSON.parse(localStorage.getItem('availability')) || [];
+        const dateAvailability = availability.find(item => item.date === date);
+        
+        if (dateAvailability) {
+            dateAvailability.hours = dateAvailability.hours.filter(h => h !== hour);
+            
+            // Remove a data se não houver mais horários disponíveis
+            if (dateAvailability.hours.length === 0) {
+                availability.splice(availability.indexOf(dateAvailability), 1);
+            }
+            
+            localStorage.setItem('availability', JSON.stringify(availability));
+        }
+    }
+    
+    function showTicket(agendamento) {
+        bookingFormSection.style.display = 'none';
+        ticketSection.style.display = 'block';
+        
+        // Corrigindo a formatação da data para exibir exatamente como foi selecionada
+        const dataParts = agendamento.data.split('-');
+        const formattedDate = new Date(dataParts[0], dataParts[1] - 1, dataParts[2]).toLocaleDateString('pt-BR', {
+            weekday: 'long',
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        });
+        
+        ticketContent.innerHTML = `
+            <p><strong>ID:</strong> <span class="ticket-id">${agendamento.id}</span></p>
+            <p><strong>Cliente:</strong> ${agendamento.nome}</p>
+            <p><strong>Telefone:</strong> ${agendamento.telefone}</p>
+            <p><strong>Serviço:</strong> ${agendamento.servico}</p>
+            <p><strong>Valor:</strong> R$ ${agendamento.preco.toFixed(2)}</p>
+            <p><strong>Data:</strong> ${formattedDate}</p>
+            <p><strong>Horário:</strong> ${agendamento.horario}</p>
+            <p style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px dashed #d4af37; color: #d4af37; font-weight: 500;">
+                ⚠️ Aviso: Cancelamentos devem ser feitos com pelo menos 24h de antecedência.
+            </p>
+        `;
+    }
+});
+    </script>
+</body>
+</html>
